@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Gloock&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
   --plum:#1a0e22;--night:#0d0614;--petal:#f6d8d3;--rose:#e2577c;--marigold:#f4b64a;
@@ -32,7 +34,6 @@ nav a{text-decoration:none;font-weight:600}
 nav .logo{font-family:'Gloock',serif;font-size:1.25rem;color:var(--petal)}
 nav .go{font-size:.92rem;color:var(--marigold)}
 
-/* hero */
 #home{min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding-top:110px;overflow:hidden}
 #home::before{content:"";position:absolute;width:70vmax;height:70vmax;right:-30vmax;top:-18vmax;background:radial-gradient(circle,rgba(226,87,124,.5),rgba(226,87,124,0) 62%);pointer-events:none}
 #home::after{content:"";position:absolute;width:46vmax;height:46vmax;left:-22vmax;bottom:-20vmax;background:radial-gradient(circle,rgba(244,182,74,.28),rgba(244,182,74,0) 65%);pointer-events:none}
@@ -43,7 +44,6 @@ nav .go{font-size:.92rem;color:var(--marigold)}
 .btn:hover{transform:translateY(-2px);background:#ffc866}
 .hint{position:absolute;left:22px;bottom:22px;font-size:.85rem;color:var(--mute);z-index:1}
 
-/* event rows (tap to open / tap to see unlock date) */
 .sec-h{margin-bottom:30px}
 .ev{display:grid;grid-template-columns:1fr auto;gap:6px 24px;align-items:end;width:100%;padding:30px 0;border:0;border-top:1px solid var(--line);background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;text-decoration:none}
 .ev:last-of-type{border-bottom:1px solid var(--line)}
@@ -63,7 +63,6 @@ nav .go{font-size:.92rem;color:var(--marigold)}
 .ev.shake{animation:shake .4s}
 @keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
 
-/* reasons */
 #reasons{background:var(--night)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px;margin-top:34px}
 .card{perspective:1000px;height:230px;cursor:pointer;background:none;border:0;padding:0;font:inherit;color:inherit;text-align:left}
@@ -83,7 +82,12 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card .in,.btn,.ev .reveal{transition:none}.ev.shake{animation:none}}
 </style>
 </head>
+
 <body>
+
+<audio id="backgroundMusic" loop preload="auto">
+  <source src="./background.mp3" type="audio/mpeg">
+</audio>
 
 <nav>
   <a class="logo" href="#home">nishu♡</a>
@@ -105,7 +109,6 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
 <section id="days">
   <div class="col">
     <h2>Counting down to our little days</h2>
-    
 
     <a class="ev" href="anniversary.html" data-unlock="2026-12-21" data-base="2025" data-kind="anniversary" data-label="21 December 2026">
       <h3>Anniversary</h3>
@@ -131,6 +134,7 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
   <div class="col" style="max-width:960px">
     <h2>Reasons you are so, so special.</h2>
     <p class="mute">A few things I adore about you.</p>
+
     <div class="cards">
       <button class="card" aria-label="Card: DOnt open">
         <div class="in">
@@ -138,12 +142,14 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
           <div class="face back">huh♡</div>
         </div>
       </button>
+
       <button class="card" aria-label="Card: Your heart">
         <div class="in">
           <div class="face front"><i>♥</i><h3>Your heart</h3><span>Gentle, kind, and endlessly beautiful.</span></div>
           <div class="face back">PGL♡</div>
         </div>
       </button>
+
       <button class="card" aria-label="Card: Your little ways">
         <div class="in">
           <div class="face front"><i>♥</i><h3>Work is pending</h3><span>All the tiny things that are wonderfully you.</span></div>
@@ -151,9 +157,11 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
         </div>
       </button>
     </div>
-    <audio class="card-sound" src="sound1.mp3" preload="auto"></audio>
-    <audio class="card-sound" src="sound2.mp3" preload="auto"></audio>
-    <audio class="card-sound" src="sound3.mp3" preload="auto"></audio>
+
+    <audio class="card-sound" src="./sound1.mp3" preload="auto"></audio>
+    <audio class="card-sound" src="./sound2.mp3" preload="auto"></audio>
+    <audio class="card-sound" src="./sound3.mp3" preload="auto"></audio>
+
     <p class="after">Choose a card for a little extra love ♡</p>
   </div>
 </section>
@@ -161,26 +169,69 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
 <footer>Made with ♥ especially for Nishu</footer>
 
 <script>
-/* ---------- locked / unlocked event rows ---------- */
+
+/* Background music */
+
+var bgMusic = document.getElementById("backgroundMusic");
+bgMusic.volume = 0.45;
+
+function startBackgroundMusic(){
+  if(bgMusic.paused){
+    bgMusic.play().catch(function(){
+      console.log("Music playback blocked by browser.");
+    });
+  }
+}
+
+window.addEventListener("load",function(){
+  startBackgroundMusic();
+});
+
+document.addEventListener("click",function(){
+  startBackgroundMusic();
+},{once:true});
+
+/* Locked / unlocked event rows */
+
 (function(){
   var LOCK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
   var OPEN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/></svg>';
+
   var evs=[].slice.call(document.querySelectorAll('.ev'));
+
   function pad(n){return String(n).padStart(2,'0')}
-  function unlockDate(el){var p=el.dataset.unlock.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
-  function isOpen(el){return new Date()>=unlockDate(el)}
+
+  function unlockDate(el){
+    var p=el.dataset.unlock.split('-');
+    return new Date(+p[0],+p[1]-1,+p[2]);
+  }
+
+  function isOpen(el){
+    return new Date()>=unlockDate(el);
+  }
 
   function tick(){
     var now=new Date();
+
     evs.forEach(function(el){
       var u=unlockDate(el),end=new Date(u.getFullYear(),u.getMonth(),u.getDate()+1);
       var base=+el.dataset.base,n=u.getFullYear()-base,kind=el.dataset.kind;
-      var big=el.querySelector('.big'),hms=el.querySelector('.hms'),st=el.querySelector('.status'),rv=el.querySelector('.reveal');
+
+      var big=el.querySelector('.big');
+      var hms=el.querySelector('.hms');
+      var st=el.querySelector('.status');
+      var rv=el.querySelector('.reveal');
+
       var unlocked=now>=u,today=now>=u&&now<end;
-      el.classList.toggle('unlocked',unlocked);el.classList.toggle('locked',!unlocked);
+
+      el.classList.toggle('unlocked',unlocked);
+      el.classList.toggle('locked',!unlocked);
+
       rv.textContent='Unlocks on '+el.dataset.label+' ✦';
+
       if(unlocked){
-        big.textContent=today?'Today ♡':'Unlocked';hms.textContent='';
+        big.textContent=today?'Today ♡':'Unlocked';
+        hms.textContent='';
         st.innerHTML=OPEN+'<span>Unlocked — tap to open</span>';
         el.classList.remove('open');
         el.setAttribute('aria-label',el.querySelector('h3').textContent+', unlocked. Open it.');
@@ -193,30 +244,43 @@ footer{text-align:center;padding:40px 22px calc(40px + env(safe-area-inset-botto
       }
     });
   }
+
   evs.forEach(function(el){
     el.addEventListener('click',function(e){
-      if(isOpen(el))return;          /* unlocked: follow the real link */
-      e.preventDefault();            /* locked: just show the unlock date */
+      if(isOpen(el))return;
+      e.preventDefault();
       el.classList.toggle('open');
-      el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');
+      el.classList.remove('shake');
+      void el.offsetWidth;
+      el.classList.add('shake');
     });
   });
-  tick();setInterval(tick,1000);
+
+  tick();
+  setInterval(tick,1000);
 })();
 
-/* ---------- flip cards ---------- */
+/* Flip cards and sound effects */
+
 var cardSounds=[].slice.call(document.querySelectorAll('.card-sound'));
+
 document.querySelectorAll('.card').forEach(function(c,index){
   c.addEventListener('click',function(){
     c.classList.toggle('flip');
+
     var sound=cardSounds[index];
+
     if(sound){
       sound.currentTime=0;
       var playback=sound.play();
-      if(playback&&playback.catch)playback.catch(function(){/* Audio may be disabled by browser settings. */});
+
+      if(playback&&playback.catch){
+        playback.catch(function(){});
+      }
     }
   });
 });
+
 </script>
 </body>
 </html>
